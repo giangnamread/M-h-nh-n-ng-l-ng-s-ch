@@ -119,12 +119,12 @@
         <!-- TAB 2: MÔ PHỎNG ẢO & ESP32 (3 CỘT) -->
         <section id="tab-simulation" class="hidden grid-cols-1 xl:grid-cols-3 gap-6">
 
-            <!-- CỘT 1: Bảng điều khiển, Kết nối ESP32 & 4 Thẻ kết quả -->
+            <!-- CỘT 1: Bảng điều khiển tổng, Điều khiển thiết bị, ESP32 & 4 Thẻ kết quả -->
             <div class="flex flex-col space-y-5">
                 <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur">
                     <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
                         <h2 class="font-bold text-base flex items-center text-emerald-400">
-                            <i class="fa-solid fa-sliders mr-2"></i> Bảng Điều Khiển
+                            <i class="fa-solid fa-sliders mr-2"></i> Bảng Điều Khiển Tổng
                         </h2>
                         <span id="statusBadge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">
                             Đang dừng (OFF)
@@ -151,6 +151,30 @@
                         <button id="toggleBtn" onclick="toggleSystem()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-power-off text-lg"></i>
                             <span id="btnText">KHỞI ĐỘNG HỆ THỐNG (START)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Điều khiển thiết bị độc lập -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                        <h2 class="font-bold text-sm flex items-center text-amber-400">
+                            <i class="fa-solid fa-toggle-on mr-2"></i> Điều Khiển Thiết Bị Độc Lập
+                        </h2>
+                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Tùy chỉnh từ xa</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <button id="btnDevMotor" onclick="toggleDevice('motor')" class="py-2.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-slate-700">
+                            <i class="fa-solid fa-gears text-sm text-slate-400" id="iconMotor"></i>
+                            <span>Băng Tải</span>
+                        </button>
+                        <button id="btnDevHeater" onclick="toggleDevice('heater')" class="py-2.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-slate-700">
+                            <i class="fa-solid fa-fire text-sm text-slate-400" id="iconHeater"></i>
+                            <span>LED Lò</span>
+                        </button>
+                        <button id="btnDevTown" onclick="toggleDevice('town')" class="py-2.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-slate-700">
+                            <i class="fa-solid fa-lightbulb text-sm text-slate-400" id="iconTown"></i>
+                            <span>LED Đô Thị</span>
                         </button>
                     </div>
                 </div>
@@ -293,7 +317,7 @@
                     <i class="fa-solid fa-bolt text-amber-400 text-base mt-0.5"></i>
                     <div>
                         <strong class="text-amber-300">Dòng điện hoạt động:</strong>
-                        <p class="mt-0.5 text-slate-400">Khi bấm khởi động, nguồn 5V cấp cho ESP32 kích hoạt động cơ băng tải, máy nghiền quay, LED lò nhiệt phân và thắp sáng đô thị.</p>
+                        <p class="mt-0.5 text-slate-400">ESP32 điều khiển độc lập động cơ băng tải, LED lò nhiệt phân và LED thắp sáng đô thị.</p>
                     </div>
                 </div>
             </div>
@@ -446,6 +470,7 @@
 
         function showInfo(key) {
             const station = details[key];
+            if(!station) return;
             const modal = document.getElementById('stemModal');
             const content = document.getElementById('modalContent');
             content.innerHTML = `
@@ -470,7 +495,7 @@
             document.getElementById('stemModal').classList.add('hidden');
         }
 
-        // Image Uploader & Persistence (Session / Temporary Memory)
+        // Image Uploader & Persistence
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
@@ -480,9 +505,7 @@
                     displayUploadedImage(imgData);
                     try {
                         sessionStorage.setItem('modelImageTemp', imgData);
-                    } catch(err) {
-                        console.log("Storage limit reached");
-                    }
+                    } catch(err) { console.log("Storage limit reached"); }
                 };
                 reader.readAsDataURL(file);
             }
@@ -516,7 +539,7 @@
                 serialPort = await navigator.serial.requestPort();
                 await serialPort.open({ baudRate: 115200 });
                 const textEncoder = new TextEncoderStream();
-                const writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
+                textEncoder.readable.pipeTo(serialPort.writable);
                 serialWriter = textEncoder.writable.getWriter();
                 document.getElementById('espStatus').innerText = "Đã kết nối USB";
                 document.getElementById('espStatus').className = "text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
@@ -530,93 +553,45 @@
         async function sendDataToESP32(dataObj) {
             const jsonStr = JSON.stringify(dataObj) + "\n";
             if (serialWriter) {
-                try {
-                    await serialWriter.write(jsonStr);
-                } catch(e) { console.error(e); }
+                try { await serialWriter.write(jsonStr); } catch(e) { console.error(e); }
             }
         }
 
         async function connectESP32WiFi() {
             const ip = document.getElementById('espIpInput').value.trim();
-            if(!ip) {
-                alert('Vui lòng nhập địa chỉ IP của ESP32!');
-                return;
-            }
+            if(!ip) { alert('Vui lòng nhập địa chỉ IP của ESP32!'); return; }
             try {
                 let response = await fetch(`http://${ip}/status`, { method: 'GET', mode: 'cors' });
                 if(response.ok) {
                     document.getElementById('espStatus').innerText = "Đã kết nối Wi-Fi";
                     document.getElementById('espStatus').className = "text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
                     alert("Kết nối Wi-Fi thành công với ESP32 tại " + ip);
-                } else {
-                    alert("Không phản hồi từ thiết bị ESP32.");
-                }
-            } catch(e) {
-                alert("Lỗi kết nối mạng tới ESP32. Hãy kiểm tra lại IP hoặc CORS.");
-            }
+                } else { alert("Không phản hồi từ thiết bị ESP32."); }
+            } catch(e) { alert("Lỗi kết nối mạng tới ESP32. Hãy kiểm tra lại IP hoặc CORS."); }
         }
 
-        // Canvas Simulation Logic
-        const canvas = document.getElementById('simCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            if(!canvas) return;
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-
+        // Manual Device States
         let systemActive = false;
         let temp = 650;
         let speed = 50;
+        let devStates = { motor: false, heater: false, town: false };
 
-        let wasteParticles = [];
-        class WasteParticle {
-            constructor() {
-                this.reset();
+        function toggleDevice(dev) {
+            devStates[dev] = !devStates[dev];
+            const btn = document.getElementById(`btnDev${dev.charAt(0).toUpperCase() + dev.slice(1)}`);
+            const icon = document.getElementById(`icon${dev.charAt(0).toUpperCase() + dev.slice(1)}`);
+            
+            if (devStates[dev]) {
+                btn.className = "py-2.5 px-2 bg-emerald-600/20 text-emerald-400 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-emerald-500/40 shadow";
+                icon.className = "fa-solid text-sm text-emerald-400 " + (dev === 'motor' ? 'fa-gears' : dev === 'heater' ? 'fa-fire' : 'fa-lightbulb');
+            } else {
+                btn.className = "py-2.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-slate-700";
+                icon.className = "fa-solid text-sm text-slate-400 " + (dev === 'motor' ? 'fa-gears' : dev === 'heater' ? 'fa-fire' : 'fa-lightbulb');
             }
-            reset() {
-                this.x = 40;
-                this.y = 175;
-                this.progress = 0;
-                this.type = Math.random() > 0.5 ? 'plastic' : 'organic';
-            }
-            update(speedVal) {
-                if (!systemActive) return;
-                this.progress += (speedVal / 1200);
-                if (this.progress >= 1) {
-                    this.reset();
-                }
-                this.x = 45 + this.progress * 115;
-                this.y = 195 - this.progress * 30;
-            }
-            draw() {
-                ctx.fillStyle = this.type === 'plastic' ? '#38bdf8' : '#4ade80';
-                ctx.beginPath();
-                ctx.roundRect(this.x - 6, this.y - 6, 12, 12, 3);
-                ctx.fill();
-                ctx.strokeStyle = '#0f172a';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-            }
+
+            updateMetrics();
+            sendDataToESP32({ cmd: "control", motor: devStates.motor, heater: devStates.heater, town: devStates.town, temp: temp, speed: speed });
         }
-
-        for(let i=0; i<4; i++) {
-            let p = new WasteParticle();
-            p.progress = i * 0.25;
-            wasteParticles.push(p);
-        }
-
-        const stations = [
-            { id: 'bin', name: 'Waste Input (Đầu vào rác)', x: 40, y: 190, w: 45, h: 50, info: 'Thu gom rác thải sinh hoạt (nhựa và chất thải hữu cơ) trước khi đưa vào hệ thống xử lý.' },
-            { id: 'conveyor', name: 'Conveyor Belt (Băng tải & Động cơ)', x: 100, y: 165, w: 70, h: 40, info: 'Sử dụng động cơ giảm tốc mini vận chuyển liên tục rác từ thùng chứa vào khoang nghiền.' },
-            { id: 'shredder', name: 'Shredder (Máy nghiền rác - Trục quay)', x: 185, y: 145, w: 55, h: 65, info: 'Cắt nhỏ rác thải bằng các trục dao quay ngược chiều với tốc độ cao để tối ưu hóa quá trình nhiệt phân.' },
-            { id: 'reactor', name: 'Pyrolysis Reactor (Lò nhiệt phân)', x: 260, y: 110, w: 60, h: 105, info: 'Buồng gia nhiệt ở nhiệt độ cao (300°C - 900°C) trong môi trường không có oxy để phân hủy rác thành khí và than sinh học.' },
-            { id: 'filter', name: 'Gas Filter (Hệ thống lọc khí)', x: 345, y: 120, w: 45, h: 90, info: 'Lọc sạch các tạp chất, hơi ẩm và khí độc hại sinh ra từ quá trình nhiệt phân.' },
-            { id: 'generator', name: 'Generator (Máy phát điện)', x: 420, y: 145, w: 55, h: 70, info: 'Đốt khí sạch để vận hành tuabin máy phát điện tạo ra dòng điện năng.' },
-            { id: 'output', name: 'Electricity Output (Đầu ra điện)', x: 490, y: 155, w: 45, h: 65, info: 'Cung cấp điện năng thắp sáng các hộ gia đình trong khu đô thị và giảm thiểu rác thải chôn lấp.' }
-        ];
 
         const tempRange = document.getElementById('tempRange');
         const tempVal = document.getElementById('tempVal');
@@ -632,18 +607,34 @@
             temp = parseInt(e.target.value);
             tempVal.innerText = temp + ' °C';
             updateMetrics();
-            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive });
+            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive, ...devStates });
         });
 
         speedRange.addEventListener('input', (e) => {
             speed = parseInt(e.target.value);
             speedVal.innerText = speed + ' kg/h';
             updateMetrics();
-            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive });
+            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive, ...devStates });
         });
 
         function toggleSystem() {
             systemActive = !systemActive;
+            devStates.motor = systemActive;
+            devStates.heater = systemActive;
+            devStates.town = systemActive;
+
+            ['motor', 'heater', 'town'].forEach(dev => {
+                const btn = document.getElementById(`btnDev${dev.charAt(0).toUpperCase() + dev.slice(1)}`);
+                const icon = document.getElementById(`icon${dev.charAt(0).toUpperCase() + dev.slice(1)}`);
+                if (systemActive) {
+                    btn.className = "py-2.5 px-2 bg-emerald-600/20 text-emerald-400 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-emerald-500/40 shadow";
+                    icon.className = "fa-solid text-sm text-emerald-400 " + (dev === 'motor' ? 'fa-gears' : dev === 'heater' ? 'fa-fire' : 'fa-lightbulb');
+                } else {
+                    btn.className = "py-2.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1 border border-slate-700";
+                    icon.className = "fa-solid text-sm text-slate-400 " + (dev === 'motor' ? 'fa-gears' : dev === 'heater' ? 'fa-fire' : 'fa-lightbulb');
+                }
+            });
+
             if (systemActive) {
                 statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
                 statusBadge.innerText = "Đang chạy (RUNNING)";
@@ -674,11 +665,11 @@
                 });
             }
             updateMetrics();
-            sendDataToESP32({ cmd: "state", state: systemActive, temp: temp, speed: speed });
+            sendDataToESP32({ cmd: "state", state: systemActive, temp: temp, speed: speed, ...devStates });
         }
 
         function updateMetrics() {
-            if (!systemActive) {
+            if (!systemActive && !devStates.motor && !devStates.heater) {
                 document.getElementById('resPower').innerText = "0.0 kW";
                 document.getElementById('resBiochar').innerText = "0.0 kg/h";
                 document.getElementById('resFuel').innerText = "0.0 L/h";
@@ -717,7 +708,7 @@
 
                 stations.forEach(s => {
                     ctx.fillStyle = '#0f172a';
-                    ctx.strokeStyle = systemActive ? '#10b981' : '#334155';
+                    ctx.strokeStyle = (systemActive || devStates.motor || devStates.heater) ? '#10b981' : '#334155';
                     ctx.lineWidth = 2;
                     ctx.beginPath();
                     ctx.roundRect(s.x, s.y, s.w, s.h, 6);
@@ -748,7 +739,7 @@
                 ctx.font = '8px Inter';
                 ctx.fillText('MOTOR', 121, 137);
 
-                let motorAngle = systemActive ? frameCount * (speed * 0.05) : 0;
+                let motorAngle = (systemActive || devStates.motor) ? frameCount * (speed * 0.05) : 0;
                 ctx.save();
                 ctx.translate(137, 150);
                 ctx.rotate(motorAngle);
@@ -760,7 +751,7 @@
                 ctx.stroke();
                 ctx.restore();
 
-                if (systemActive) {
+                if (systemActive || devStates.motor) {
                     wasteParticles.forEach(p => {
                         p.update(speed);
                         p.draw();
@@ -774,7 +765,7 @@
                 ctx.font = 'bold 10px Inter';
                 ctx.fillText('CRUSH', 193, 182);
 
-                if (systemActive) {
+                if (systemActive || devStates.motor) {
                     let shredAngle = frameCount * (speed * 0.08);
                     ctx.save();
                     ctx.translate(205, 177);
@@ -802,7 +793,7 @@
                 // Reactor
                 ctx.fillStyle = '#1e293b';
                 ctx.fillRect(270, 130, 40, 70);
-                if (systemActive) {
+                if (systemActive || devStates.heater) {
                     ctx.fillStyle = Math.random() > 0.5 ? '#f97316' : '#ef4444';
                     ctx.beginPath();
                     ctx.arc(290, 165, 12 + Math.sin(frameCount*0.2)*3, 0, Math.PI*2);
@@ -812,7 +803,7 @@
                 // Filter
                 ctx.fillStyle = '#0284c7';
                 ctx.fillRect(355, 135, 25, 65);
-                if (systemActive) {
+                if (systemActive || devStates.heater) {
                     ctx.fillStyle = '#e0f2fe';
                     let bubbleY = 190 - ((frameCount * 2) % 50);
                     ctx.beginPath();
@@ -827,14 +818,14 @@
                 ctx.strokeStyle = '#ffffff';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                let angle = systemActive ? frameCount * 0.15 : 0;
+                let angle = (systemActive || devStates.heater) ? frameCount * 0.15 : 0;
                 ctx.arc(447, 180, 12, angle, angle + Math.PI/2);
                 ctx.stroke();
 
                 // Town Output
                 ctx.fillStyle = '#ca8a04';
                 ctx.fillRect(500, 170, 25, 40);
-                ctx.fillStyle = (systemActive && temp > 400) ? '#fde047' : '#64748b';
+                ctx.fillStyle = (devStates.town || (systemActive && temp > 400)) ? '#fde047' : '#64748b';
                 ctx.beginPath();
                 ctx.arc(512, 160, 10, 0, Math.PI*2);
                 ctx.fill();
@@ -845,14 +836,65 @@
             requestAnimationFrame(drawSimulation);
         }
 
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            if(!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        let wasteParticles = [];
+        class WasteParticle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = 40;
+                this.y = 175;
+                this.progress = 0;
+                this.type = Math.random() > 0.5 ? 'plastic' : 'organic';
+            }
+            update(speedVal) {
+                if (!systemActive && !devStates.motor) return;
+                this.progress += (speedVal / 1200);
+                if (this.progress >= 1) { this.reset(); }
+                this.x = 45 + this.progress * 115;
+                this.y = 195 - this.progress * 30;
+            }
+            draw() {
+                ctx.fillStyle = this.type === 'plastic' ? '#38bdf8' : '#4ade80';
+                ctx.beginPath();
+                ctx.roundRect(this.x - 6, this.y - 6, 12, 12, 3);
+                ctx.fill();
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+        }
+
+        for(let i=0; i<4; i++) {
+            let p = new WasteParticle();
+            p.progress = i * 0.25;
+            wasteParticles.push(p);
+        }
+
+        const stations = [
+            { id: 'bin', name: 'Waste Input (Đầu vào rác)', x: 40, y: 190, w: 45, h: 50 },
+            { id: 'conveyor', name: 'Conveyor Belt (Băng tải & Động cơ)', x: 100, y: 165, w: 70, h: 40 },
+            { id: 'shredder', name: 'Shredder (Máy nghiền rác)', x: 185, y: 145, w: 55, h: 65 },
+            { id: 'reactor', name: 'Pyrolysis Reactor (Lò nhiệt phân)', x: 260, y: 110, w: 60, h: 105 },
+            { id: 'filter', name: 'Gas Filter (Hệ thống lọc khí)', x: 345, y: 120, w: 45, h: 90 },
+            { id: 'generator', name: 'Generator (Máy phát điện)', x: 420, y: 145, w: 55, h: 70 },
+            { id: 'output', name: 'Electricity Output (Đầu ra điện)', x: 490, y: 155, w: 45, h: 65 }
+        ];
+
         drawSimulation();
 
         canvas.addEventListener('click', (e) => {
             const rect = canvas.getBoundingClientRect();
-            const scaleX = 560 / rect.width;
-            const scaleY = 300 / rect.height;
-            const clickX = (e.clientX - rect.left) * scaleX;
-            const clickY = (e.clientY - rect.top) * scaleY;
+            const clickX = (e.clientX - rect.left) * (560 / rect.width);
+            const clickY = (e.clientY - rect.top) * (300 / rect.height);
 
             let clickedStation = stations.find(s => clickX >= s.x && clickX <= s.x + s.w && clickY >= s.y && clickY <= s.y + s.h);
             if (clickedStation) {
