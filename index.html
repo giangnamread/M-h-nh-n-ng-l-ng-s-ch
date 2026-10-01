@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-recycle"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold text-emerald-400">Hệ thống chất thải thông minh (Smart Waste System)</h1>
+                <h1 class="text-xl font-bold text-emerald-400">Smart Waste to Energy System</h1>
                 <p class="text-xs text-slate-400">Clean City + Green Energy = Better Future / Thành phố sạch + Năng lượng xanh = Tương lai tốt đẹp</p>
             </div>
         </div>
@@ -119,7 +119,7 @@
         <!-- TAB 2: MÔ PHỎNG ẢO & ESP32 (3 CỘT) -->
         <section id="tab-simulation" class="hidden grid-cols-1 xl:grid-cols-3 gap-6">
 
-            <!-- CỘT 1: Bảng điều khiển & Kết nối ESP32 -->
+            <!-- CỘT 1: Bảng điều khiển, Kết nối ESP32 & 4 Thẻ kết quả -->
             <div class="flex flex-col space-y-5">
                 <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur">
                     <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
@@ -175,7 +175,7 @@
                     </div>
                 </div>
 
-                <!-- Result Metric Cards -->
+                <!-- 4 Thẻ kết quả đầy đủ -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
                         <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-lightbulb"></i></div>
@@ -186,6 +186,16 @@
                         <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-seedling"></i></div>
                         <div id="resBiochar" class="text-xl font-black text-white">0.0 kg/h</div>
                         <div class="text-[11px] text-slate-400 mt-0.5">Than sinh học</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+                        <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-oil-can"></i></div>
+                        <div id="resFuel" class="text-xl font-black text-white">0.0 L/h</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Nhiên liệu lỏng</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+                        <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                        <div id="resCo2" class="text-xl font-black text-white">0.0 kg/h</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Giảm phát thải CO2</div>
                     </div>
                 </div>
             </div>
@@ -207,7 +217,7 @@
 
                 <div class="mt-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-center space-x-2">
                     <i class="fa-solid fa-circle-info text-emerald-400 text-base"></i>
-                    <p><strong>Hoạt động:</strong> Động cơ băng tải và trục máy nghiền quay đồng bộ đưa rác vào lò nhiệt phân.</p>
+                    <p><strong>💡 Click trực tiếp vào các trạm trên sơ đồ</strong> để xem kiến thức Khoa học & Kỹ thuật STEM chi tiết.</p>
                 </div>
             </div>
 
@@ -282,8 +292,8 @@
                 <div class="mt-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start space-x-2">
                     <i class="fa-solid fa-bolt text-amber-400 text-base mt-0.5"></i>
                     <div>
-                        <strong class="text-amber-300">Dòng điện mạch:</strong>
-                        <p class="mt-0.5 text-slate-400">ESP32 điều khiển động cơ băng tải, máy nghiền và LED thắp sáng đô thị.</p>
+                        <strong class="text-amber-300">Dòng điện hoạt động:</strong>
+                        <p class="mt-0.5 text-slate-400">Khi bấm khởi động, nguồn 5V cấp cho ESP32 kích hoạt động cơ băng tải, máy nghiền quay, LED lò nhiệt phân và thắp sáng đô thị.</p>
                     </div>
                 </div>
             </div>
@@ -314,28 +324,77 @@
             </div>
         </section>
 
-        <!-- TAB 4: HƯỚNG DẪN & BẢN VẼ 3D -->
+        <!-- TAB 4: HƯỚNG DẪN & BẢN VẼ 3D CHI TIẾT -->
         <section id="tab-guide" class="hidden space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-                <div class="flex items-center space-x-3 mb-4 border-b border-slate-800 pb-3">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex items-center space-x-3 mb-2 border-b border-slate-800 pb-3">
                     <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-2xl">
                         <i class="fa-solid fa-book-bookmark"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-emerald-400">Hướng dẫn sử dụng & Thông số 3D ESP32</h2>
-                        <p class="text-xs text-slate-400">Tài liệu vận hành phần cứng ESP32 và phần mềm mô phỏng ảo</p>
+                        <h2 class="text-xl font-bold text-emerald-400">Hướng dẫn sử dụng & Bản vẽ kỹ thuật 3D</h2>
+                        <p class="text-xs text-slate-400">Thông số thiết kế mô hình thực tế và tài liệu vận hành phần cứng ESP32</p>
                     </div>
                 </div>
 
-                <div class="space-y-6">
+                <!-- Phần I: Bản vẽ kỹ thuật 3D -->
+                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-ruler-combined"></i>
+                        <span>I. Bản vẽ thiết kế không gian 3D & Thông số kỹ thuật mô hình thực tế</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300 leading-relaxed">
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <strong class="text-emerald-400 block text-sm">1. Kích thước tổng thể đế mô hình (Base Platform):</strong>
+                            <p>Chiều dài: <strong class="text-white">80 cm</strong> x Chiều rộng: <strong class="text-white">50 cm</strong> x Chiều cao nền: <strong class="text-white">10 cm</strong> (làm bằng bìa carton cứng nhiều lớp lót thảm cỏ nhân tạo).</p>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <strong class="text-emerald-400 block text-sm">2. Phân khu 1 - Trạm đầu vào & Băng tải (Góc trái):</strong>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li><strong>Thùng rác (Waste Input):</strong> Hộp vuông 10 x 10 x 12 cm phân loại nhựa và hữu cơ.</li>
+                                <li><strong>Băng tải (Conveyor Belt):</strong> Máng nghiêng góc 30 độ, dài 22 cm, rộng 6 cm tích hợp động cơ mini.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <strong class="text-emerald-400 block text-sm">3. Phân khu 2 - Cụm cơ khí & Lò nhiệt phân (Trung tâm):</strong>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li><strong>Máy nghiền (Shredder):</strong> Hộp màu vàng 12 x 10 x 10 cm mô phỏng trục cắt dao quay.</li>
+                                <li><strong>Lò nhiệt phân (Pyrolysis Reactor):</strong> Trụ tròn đường kính 10 cm, cao 22 cm, khoét kính mica lót LED cam/đỏ.</li>
+                                <li><strong>Khay sản phẩm phụ:</strong> 3 ngăn trong suốt chứa Than sinh học, Nhiên liệu lỏng và Khí đốt.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <strong class="text-emerald-400 block text-sm">4. Phân khu 3 - Trạm lọc khí & Phát điện (Góc phải):</strong>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li><strong>Bình lọc khí (Gas Filter):</strong> Trụ nhựa trong xanh dương cao 18 cm, chứa vật liệu lọc giả lập.</li>
+                                <li><strong>Máy phát điện (Generator):</strong> Hộp điều khiển tích hợp tuabin và mạch điện.</li>
+                                <li><strong>Khu đô thị (Electricity Output):</strong> Mô hình nhà ở thu nhỏ kết hợp LED phát sáng tượng trưng năng lượng xanh.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần II & III: Hướng dẫn phần cứng & ESP32 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
                         <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">
                             <i class="fa-solid fa-microchip"></i>
-                            <span>I. Kết nối phần cứng ESP32 & Sơ đồ chân (Pinout)</span>
+                            <span>II. Kết nối phần cứng ESP32 & Sơ đồ chân (Pinout)</span>
                         </div>
                         <p class="text-xs text-slate-300 leading-relaxed">
-                            Mạch ESP32 trên đế mở rộng kết nối trực tiếp với động cơ băng tải (PWM Pin 25), máy nghiền (Pin 26), LED lò nhiệt phân (Pin 14) và LED khu đô thị (Pin 27). Bạn có thể kết nối cáp USB Type-C trực tiếp vào máy tính và bấm <strong>"Kết nối USB WebSerial"</strong> ở Tab 2 để điều khiển phần cứng thực tế qua giao diện web!
+                            Mạch ESP32 trên đế mở rộng kết nối trực tiếp với động cơ băng tải (PWM Pin 25), máy nghiền (Pin 26), LED lò nhiệt phân (Pin 14) và LED khu đô thị (Pin 27). Màn hình OLED SSD1306 kết nối qua chân I2C (SDA=21, SCL=22). Thầy có thể cắm cáp USB kết nối trực tiếp vào máy tính và bấm <strong>"Kết nối USB WebSerial"</strong> ở Tab 2 để điều khiển phần cứng thực tế qua giao diện web!
                         </p>
+                    </div>
+
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                        <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-toolbox"></i>
+                            <span>III. Hướng dẫn vận hành Mô hình thực tế & Mô phỏng ảo</span>
+                        </div>
+                        <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-4">
+                            <li><strong>Phần cứng:</strong> Cố định các phân khu trên đế carton 80x50x10 cm, đấu nối mạch điện tử và nạp code cho ESP32.</li>
+                            <li><strong>Mô phỏng ảo:</strong> Sử dụng thanh trượt nhiệt độ, tốc độ trên web, nhấn START để kích hoạt băng tải quay và đồng bộ thông số qua màn hình OLED.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -373,6 +432,42 @@
                     btn.className = "px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap";
                 }
             });
+        }
+
+        const details = {
+            bin: { name: "Waste Input (Đầu vào rác)", info: "Thu gom và phân loại rác thải sinh hoạt gồm nhựa và chất thải hữu cơ từ các hộ dân cư làm nguyên liệu đầu vào cho hệ thống." },
+            conveyor: { name: "Conveyor Belt (Băng tải)", info: "Sử dụng động cơ mini và hệ thống truyền động để vận chuyển rác tự động từ thùng chứa lên khoang nghiền." },
+            shredder: { name: "Shredder (Máy nghiền)", info: "Cắt và xé nhỏ rác thải thành các mảnh kích thước nhỏ đều nhau để tối ưu hóa diện tích tiếp xúc nhiệt trong lò." },
+            reactor: { name: "Pyrolysis Reactor (Lò nhiệt phân)", info: "Buồng gia nhiệt ở nhiệt độ cao (300°C - 900°C) trong môi trường không có oxy, phân hủy rác thành khí sạch, nhiên liệu lỏng và than sinh học." },
+            filter: { name: "Gas Filter (Hệ thống lọc khí)", info: "Lọc sạch các tạp chất, hơi ẩm và chất độc hại có trong dòng khí sinh ra từ quá trình nhiệt phân." },
+            generator: { name: "Generator (Máy phát điện)", info: "Sử dụng nguồn khí sạch làm nhiên liệu vận hành tuabin để sản xuất năng lượng điện." },
+            output: { name: "Electricity Output (Đầu ra điện năng)", info: "Cung cấp điện năng thắp sáng các hộ gia đình hoặc khu đô thị, minh chứng cho hiệu quả của hệ thống năng lượng tái tạo." }
+        };
+
+        function showInfo(key) {
+            const station = details[key];
+            const modal = document.getElementById('stemModal');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-xl">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">${station.name}</h3>
+                        <p class="text-xs text-emerald-400">Kiến thức Chuyên đề STEM & Công nghệ</p>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-4">${station.info}</p>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs text-slate-400">
+                    <strong>Ý nghĩa giáo dục:</strong> Giúp học sinh nắm bắt quy trình công nghệ xanh và phát triển tư duy sáng tạo trong môn Hoạt động trải nghiệm, hướng nghiệp.
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('stemModal').classList.add('hidden');
         }
 
         // Image Uploader & Persistence (Session / Temporary Memory)
@@ -586,12 +681,19 @@
             if (!systemActive) {
                 document.getElementById('resPower').innerText = "0.0 kW";
                 document.getElementById('resBiochar').innerText = "0.0 kg/h";
+                document.getElementById('resFuel').innerText = "0.0 L/h";
+                document.getElementById('resCo2').innerText = "0.0 kg/h";
                 return;
             }
             let power = (speed * (temp / 650) * 0.35).toFixed(1);
             let biochar = (speed * 0.25).toFixed(1);
+            let fuel = (speed * 0.30).toFixed(1);
+            let co2 = (speed * 1.8).toFixed(1);
+
             document.getElementById('resPower').innerText = power + " kW";
             document.getElementById('resBiochar').innerText = biochar + " kg/h";
+            document.getElementById('resFuel').innerText = fuel + " L/h";
+            document.getElementById('resCo2').innerText = co2 + " kg/h";
         }
 
         let frameCount = 0;
@@ -744,6 +846,19 @@
         }
 
         drawSimulation();
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = 560 / rect.width;
+            const scaleY = 300 / rect.height;
+            const clickX = (e.clientX - rect.left) * scaleX;
+            const clickY = (e.clientY - rect.top) * scaleY;
+
+            let clickedStation = stations.find(s => clickX >= s.x && clickX <= s.x + s.w && clickY >= s.y && clickY <= s.y + s.h);
+            if (clickedStation) {
+                showInfo(clickedStation.id);
+            }
+        });
     </script>
 </body>
 </html>
