@@ -1,102 +1,71 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ thống chất thải thông minh (Smart Waste System)</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        emeraldCustom: {
-                            50: '#ecfdf5',
-                            500: '#10b981',
-                            600: '#059669',
-                            800: '#065f46',
-                            900: '#064e3b',
-                            950: '#022c22'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .glow-box { box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); }
-        .glow-circuit { box-shadow: 0 0 30px rgba(56, 189, 248, 0.15); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
         .circuit-line { stroke-dasharray: 8; animation: dash 1.5s linear infinite; }
         @keyframes dash { to { stroke-dashoffset: -16; } }
-        .pulse-fire { animation: fireGlow 1s ease-in-out infinite alternate; }
-        @keyframes fireGlow {
-            from { filter: drop-shadow(0 0 5px #f97316); }
-            to { filter: drop-shadow(0 0 15px #ef4444); }
-        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
-    <header class="bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 border-b border-emerald-800/40 sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
-        <div class="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-3">
-            <div class="flex items-center space-x-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-900/50">
-                    <i class="fa-solid fa-recycle text-slate-950 text-xl font-bold"></i>
-                </div>
-                <div>
-                    <h1 class="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                        Hệ thống chất thải thông minh <span class="text-xs font-normal text-slate-400">(Smart Waste System)</span>
-                    </h1>
-                    <p class="text-xs text-emerald-400/80 font-medium tracking-wide">
-                        Clean City + Green Energy = Better Future 🌱⚡ (Thành phố sạch + Năng lượng xanh = Tương lai tốt đẹp)
-                    </p>
-                </div>
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 py-3 px-6 shadow-md flex flex-wrap justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="bg-emerald-500 text-slate-950 p-2.5 rounded-xl font-bold text-xl shadow-lg">
+                <i class="fa-solid fa-recycle"></i>
             </div>
-
-            <div class="flex flex-wrap items-center gap-3 bg-slate-900/90 border border-emerald-500/30 px-4 py-2 rounded-2xl shadow-inner">
-                <div class="flex items-center space-x-2 text-xs text-slate-300 border-r border-slate-700 pr-3">
-                    <i class="fa-solid fa-school text-emerald-400"></i>
-                    <span class="font-semibold">Trung tâm GDNN-GDTX Gio Linh</span>
-                </div>
-                <div class="flex items-center space-x-2 text-xs text-slate-300">
-                    <i class="fa-solid fa-chalkboard-user text-teal-400"></i>
-                    <span>GVHD: <strong class="text-emerald-300">Nguyễn Giang Nam</strong></span>
-                </div>
+            <div>
+                <h1 class="text-xl font-bold text-emerald-400">Hệ thống chất thải thông minh (Smart Waste System)</h1>
+                <p class="text-xs text-slate-400">Clean City + Green Energy = Better Future / Thành phố sạch + Năng lượng xanh = Tương lai tốt đẹp</p>
             </div>
         </div>
-
-        <nav class="bg-slate-900/90 border-t border-slate-800 px-6 py-2.5 flex space-x-3 overflow-x-auto shadow-inner">
-            <button onclick="switchTab('tab-intro')" id="btn-tab-intro" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-slate-950 shadow-lg flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-circle-info"></i>
-                <span>1. Giới thiệu & Mục tiêu GD</span>
-            </button>
-            <button onclick="switchTab('tab-simulation')" id="btn-tab-simulation" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-desktop"></i>
-                <span>2. Mô phỏng ảo & Cơ khí quay</span>
-            </button>
-            <button onclick="switchTab('tab-realmodel')" id="btn-tab-realmodel" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-image"></i>
-                <span>3. Mô hình thực tế (Tải ảnh tạm thời)</span>
-            </button>
-            <button onclick="switchTab('tab-guide')" id="btn-tab-guide" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
-                <i class="fa-solid fa-book-open"></i>
-                <span>4. Hướng dẫn & Thông số 3D</span>
-            </button>
-        </nav>
+        <div class="flex items-center space-x-4 mt-2 sm:mt-0 text-sm">
+            <div class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                <i class="fa-solid fa-school text-emerald-400 mr-1.5"></i> Trung tâm GDNN-GDTX Gio Linh
+            </div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                <i class="fa-solid fa-chalkboard-user text-emerald-400 mr-1.5"></i> GVHD: Nguyễn Giang Nam
+            </div>
+        </div>
     </header>
 
-    <main class="flex-grow max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Navigation Tabs Bar -->
+    <nav class="bg-slate-900/80 border-b border-slate-800 px-6 py-2.5 flex space-x-3 overflow-x-auto shadow-inner">
+        <button onclick="switchTab('intro')" id="btn-intro" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-slate-950 shadow-lg flex items-center space-x-2 whitespace-nowrap">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>1. Giới thiệu & Mục tiêu GD</span>
+        </button>
+        <button onclick="switchTab('simulation')" id="btn-simulation" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
+            <i class="fa-solid fa-desktop"></i>
+            <span>2. Mô phỏng ảo & ESP32</span>
+        </button>
+        <button onclick="switchTab('diorama2d')" id="btn-diorama2d" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
+            <i class="fa-solid fa-image"></i>
+            <span>3. Mô hình thực tế (Tải ảnh tạm thời)</span>
+        </button>
+        <button onclick="switchTab('guide')" id="btn-guide" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap">
+            <i class="fa-solid fa-book-open"></i>
+            <span>4. Hướng dẫn & Bản vẽ 3D</span>
+        </button>
+    </nav>
 
-        <section id="tab-intro" class="tab-content active space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl backdrop-blur-sm space-y-6">
-                <div class="flex items-center space-x-4 border-b border-slate-800 pb-4">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl font-bold">
+    <!-- Main Content Area -->
+    <main class="flex-1 p-4 xl:p-6 max-w-[1700px] mx-auto w-full">
+
+        <!-- TAB 1: GIỚI THIỆU & MỤC TIÊU GIÁO DỤC -->
+        <section id="tab-intro" class="space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center space-x-3 mb-4 border-b border-slate-800 pb-3">
+                    <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-2xl">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div>
@@ -113,33 +82,33 @@
                         <p>
                             Thông qua dự án <strong class="text-white">"Hệ thống chất thải thông minh" (Smart Waste System)</strong>, chúng tôi định hướng và giúp học sinh nhận thức rõ về:
                         </p>
-                        <ul class="space-y-3 pl-4 border-l-2 border-emerald-500/50">
+                        <ul class="space-y-2 pl-4 border-l-2 border-emerald-500/50">
                             <li><strong class="text-white">1. Trách nhiệm bảo vệ môi trường:</strong> Thay đổi tư duy từ <em>"vứt bỏ rác"</em> sang <em>"coi rác là tài nguyên"</em> thông qua công nghệ nhiệt phân tuần hoàn năng lượng.</li>
-                            <li><strong class="text-white">2. Phát triển năng lực STEM & Chuyển đổi số:</strong> Kết hợp giữa kiến thức Khoa học (nhiệt phân), Công nghệ (điều khiển vi điều khiển), Kỹ thuật (chế tạo cơ khí tái chế) và Toán học (tính toán công suất).</li>
-                            <li><strong class="text-white">3. Định hướng nghề nghiệp thực tiễn:</strong> Giúp học sinh khối GDTX khám phá năng lực bản thân đối với các ngành nghề kỹ thuật: Điện - Tự động hóa, Công nghệ môi trường và Xây dựng đô thị thông minh.</li>
+                            <li><strong class="text-white">2. Phát triển năng lực STEM & Chuyển đổi số:</strong> Kết hợp giữa kiến thức Khoa học (nhiệt phân), Công nghệ (điều khiển vi điều khiển ESP32), Kỹ thuật (chế tạo cơ khí) và Toán học.</li>
+                            <li><strong class="text-white">3. Định hướng nghề nghiệp thực tiễn:</strong> Giúp học sinh khối GDTX khám phá năng lực bản thân đối với các ngành nghề kỹ thuật tự động hóa và môi trường.</li>
                         </ul>
                     </div>
 
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col justify-between space-y-4">
                         <h3 class="text-base font-bold text-emerald-400 flex items-center">
                             <i class="fa-solid fa-circle-nodes mr-2"></i> Tổng quan các giai đoạn chuyển hóa năng lượng
                         </h3>
                         <div class="space-y-3 text-xs text-slate-300">
-                            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex items-start space-x-3">
+                            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 flex items-start space-x-3">
                                 <span class="bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px]">1</span>
-                                <div><strong class="text-white">Waste Input & Conveyor Belt:</strong> Thu gom rác nhựa/hữu cơ, vận chuyển tự động bằng động cơ mini lên hệ thống.</div>
+                                <div><strong class="text-white">Waste Input & Conveyor:</strong> Thu gom rác, băng tải vận chuyển tự động bằng động cơ mini.</div>
                             </div>
-                            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex items-start space-x-3">
+                            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 flex items-start space-x-3">
                                 <span class="bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px]">2</span>
-                                <div><strong class="text-white">Shredder & Pyrolysis Reactor:</strong> Trục dao máy nghiền quay cắt nhỏ rác và nung trong lò nhiệt phân không oxy sinh ra khí, than sinh học.</div>
+                                <div><strong class="text-white">Shredder & Reactor:</strong> Máy nghiền cắt nhỏ rác, lò nhiệt phân không oxy sinh ra khí tổng hợp và than sinh học.</div>
                             </div>
-                            <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex items-start space-x-3">
+                            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 flex items-start space-x-3">
                                 <span class="bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px]">3</span>
-                                <div><strong class="text-white">Gas Filter & Generator:</strong> Làm sạch khí tổng hợp qua bình lọc để vận hành máy phát điện thắp sáng đô thị.</div>
+                                <div><strong class="text-white">Gas Filter & Generator:</strong> Làm sạch khí qua bình lọc để vận hành máy phát điện thắp sáng đô thị.</div>
                             </div>
                         </div>
-                        <button onclick="switchTab('tab-simulation')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition text-sm shadow-lg flex items-center justify-center space-x-2">
-                            <span>Trải nghiệm Mô phỏng Ảo & Động cơ quay</span>
+                        <button onclick="switchTab('simulation')" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition text-sm shadow-lg flex items-center justify-center space-x-2">
+                            <span>Trải nghiệm Mô phỏng & Kết nối ESP32</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -147,330 +116,226 @@
             </div>
         </section>
 
-        <section id="tab-simulation" class="tab-content space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-                
-                <!-- Column 1: Control Panel & Metrics -->
-                <div class="flex flex-col space-y-4">
-                    <div class="bg-slate-900/90 border border-emerald-500/20 rounded-3xl p-5 shadow-xl backdrop-blur-sm space-y-4 glow-box flex-grow flex flex-col justify-between">
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fa-solid fa-sliders text-emerald-400"></i>
-                                    <h2 class="text-sm font-bold text-white">Bảng Điều Khiển <span class="text-xs text-slate-400 font-normal">(Control Panel)</span></h2>
-                                </div>
-                                <span id="status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">
-                                    OFF (Đang dừng)
-                                </span>
-                            </div>
+        <!-- TAB 2: MÔ PHỎNG ẢO & ESP32 (3 CỘT) -->
+        <section id="tab-simulation" class="hidden grid-cols-1 xl:grid-cols-3 gap-6">
 
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-xs text-slate-300 mb-1">
-                                        <span>Nhiệt độ lò <span class="text-slate-400 text-[10px]">(Reactor Temp)</span>:</span>
-                                        <span id="temp-display" class="font-bold text-emerald-400">650 °C</span>
-                                    </div>
-                                    <input type="range" id="temp-slider" min="400" max="900" value="650" step="10" 
-                                        class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="updateParameters()">
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs text-slate-300 mb-1">
-                                        <span>Tốc độ rác & Cơ khí <span class="text-slate-400 text-[10px]">(Speed)</span>:</span>
-                                        <span id="speed-display" class="font-bold text-emerald-400">50 kg/h</span>
-                                    </div>
-                                    <input type="range" id="speed-slider" min="10" max="150" value="50" step="5" 
-                                        class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="updateParameters()">
-                                </div>
-                            </div>
-
-                            <button id="toggle-btn" onclick="toggleSimulation()" 
-                                class="w-full py-3.5 px-4 rounded-2xl font-bold text-xs tracking-wide shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 shadow-emerald-900/50">
-                                <i id="toggle-icon" class="fa-solid fa-power-off text-sm"></i>
-                                <span id="toggle-text">KHỞI ĐỘNG HỆ THỐNG (START)</span>
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 pt-4 border-t border-slate-800">
-                            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 shadow-inner flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                                        <i class="fa-solid fa-bolt text-sm"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-slate-300">Công suất phát điện</p>
-                                        <p class="text-[10px] text-slate-400 font-normal">Electricity Output</p>
-                                    </div>
-                                </div>
-                                <h3 id="metric-power" class="text-base font-extrabold text-amber-300">0.0 <span class="text-[11px] font-normal text-slate-400">kW</span></h3>
-                            </div>
-
-                            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 shadow-inner flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center">
-                                        <i class="fa-solid fa-seedling text-sm"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-slate-300">Than sinh học</p>
-                                        <p class="text-[10px] text-slate-400 font-normal">Biochar (Fertilizer)</p>
-                                    </div>
-                                </div>
-                                <h3 id="metric-biochar" class="text-base font-extrabold text-teal-300">0.0 <span class="text-[11px] font-normal text-slate-400">kg/h</span></h3>
-                            </div>
-
-                            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 shadow-inner flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-9 h-9 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center">
-                                        <i class="fa-solid fa-oil-well text-sm"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-slate-300">Nhiên liệu lỏng</p>
-                                        <p class="text-[10px] text-slate-400 font-normal">Liquid Fuel (Industry)</p>
-                                    </div>
-                                </div>
-                                <h3 id="metric-fuel" class="text-base font-extrabold text-sky-300">0.0 <span class="text-[11px] font-normal text-slate-400">L/h</span></h3>
-                            </div>
-
-                            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3.5 shadow-inner flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                                        <i class="fa-solid fa-earth-americas text-sm"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-slate-300">Giảm phát thải CO2</p>
-                                        <p class="text-[10px] text-slate-400 font-normal">CO2 Reduction</p>
-                                    </div>
-                                </div>
-                                <h3 id="metric-co2" class="text-base font-extrabold text-emerald-300">0.0 <span class="text-[11px] font-normal text-slate-400">kg/h</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Column 2: Visual Simulation Canvas with Fixed Proportions & Clean Rendering -->
-                <div class="flex flex-col space-y-4">
-                    <div class="bg-slate-900/90 border border-emerald-500/20 rounded-3xl p-5 shadow-xl backdrop-blur-sm space-y-3 glow-box flex-grow flex flex-col justify-between">
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fa-solid fa-gear fa-spin text-emerald-400 text-base"></i>
-                                    <h2 class="text-sm font-bold text-white">Mô Phỏng Động Cơ & Băng Tải Quay <span class="text-xs text-slate-400 font-normal">(Canvas Simulation)</span></h2>
-                                </div>
-                            </div>
-
-                            <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-inner flex items-center justify-center">
-                                <canvas id="plantCanvas" class="w-full h-full cursor-pointer"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800 text-center">
-                            <p class="text-[11px] text-emerald-400 font-medium">
-                                💡 Click trực tiếp vào các trạm trên sơ đồ để xem kiến thức Khoa học & Kỹ thuật STEM chi tiết.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Column 3: Hardware Circuit Schematic -->
-                <div class="flex flex-col space-y-4">
-                    <div class="bg-slate-900/90 border border-sky-500/20 rounded-3xl p-5 shadow-xl backdrop-blur-sm space-y-3 glow-circuit flex-grow flex flex-col justify-between">
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fa-solid fa-microchip text-sky-400 text-base"></i>
-                                    <h2 class="text-sm font-bold text-white">Sơ Đồ Mạch Điện Phần Cứng <span class="text-xs text-slate-400 font-normal">(Circuit Schematic)</span></h2>
-                                </div>
-                                <span id="circuitStatus" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30">
-                                    Mạch ngắt (Open)
-                                </span>
-                            </div>
-
-                            <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-inner flex items-center justify-center p-2">
-                                <svg id="circuitSvg" viewBox="0 0 450 340" class="w-full h-full">
-                                    <defs>
-                                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
-                                        </pattern>
-                                    </defs>
-                                    <rect width="450" height="340" fill="url(#grid)" />
-
-                                    <path id="wire1" d="M 70 170 L 130 170" fill="none" stroke="#64748b" stroke-width="3" />
-                                    <path id="wire2" d="M 160 170 L 220 170" fill="none" stroke="#64748b" stroke-width="3" />
-                                    <path id="wire3" d="M 260 140 L 360 90" fill="none" stroke="#64748b" stroke-width="3" />
-                                    <path id="wire4" d="M 240 140 L 240 70" fill="none" stroke="#64748b" stroke-width="3" />
-                                    <path id="wire5" d="M 260 200 L 360 250" fill="none" stroke="#64748b" stroke-width="3" />
-                                    <path id="wire6" d="M 360 120 C 360 200, 240 300, 140 230" fill="none" stroke="#64748b" stroke-width="3" />
-
-                                    <g transform="translate(45, 145)">
-                                        <rect width="30" height="50" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
-                                        <text x="15" y="30" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">5V</text>
-                                        <text x="15" y="-5" fill="#94a3b8" font-size="9" text-anchor="middle">Nguồn</text>
-                                    </g>
-
-                                    <g transform="translate(130, 155)">
-                                        <rect width="30" height="30" rx="4" fill="#0f172a" stroke="#fbbf24" stroke-width="2"/>
-                                        <circle cx="15" cy="15" r="8" fill="#fbbf24" id="btnIndicator"/>
-                                        <text x="15" y="45" fill="#94a3b8" font-size="9" text-anchor="middle">Nút nguồn</text>
-                                    </g>
-
-                                    <g transform="translate(220, 130)">
-                                        <rect width="40" height="80" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
-                                        <text x="20" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">MCU</text>
-                                        <text x="20" y="50" fill="#10b981" font-size="9" text-anchor="middle">ESP32</text>
-                                        <text x="20" y="-8" fill="#94a3b8" font-size="9" text-anchor="middle">Vi điều khiển</text>
-                                    </g>
-
-                                    <g transform="translate(340, 70)">
-                                        <circle cx="20" cy="20" r="18" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
-                                        <text x="20" y="24" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">M</text>
-                                        <text x="20" y="48" fill="#94a3b8" font-size="9" text-anchor="middle">Động cơ</text>
-                                    </g>
-
-                                    <g transform="translate(225, 30)">
-                                        <circle cx="15" cy="15" r="15" fill="#0f172a" stroke="#f97316" stroke-width="2"/>
-                                        <text x="15" y="19" fill="#f97316" font-size="11" text-anchor="middle">🔥</text>
-                                        <text x="15" y="42" fill="#94a3b8" font-size="9" text-anchor="middle">LED Lò</text>
-                                    </g>
-
-                                    <g transform="translate(340, 230)">
-                                        <circle cx="20" cy="20" r="18" fill="#0f172a" stroke="#eab308" stroke-width="2"/>
-                                        <text x="20" y="24" fill="#eab308" font-size="11" text-anchor="middle">💡</text>
-                                        <text x="20" y="48" fill="#94a3b8" font-size="9" text-anchor="middle">LED Đô thị</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                            <h3 class="text-xs font-bold text-sky-400 flex items-center space-x-1.5">
-                                <i class="fa-solid fa-bolt-lightning"></i>
-                                <span>Dòng điện hoạt động:</span>
-                            </h3>
-                            <p class="text-[11px] text-slate-300 leading-relaxed">
-                                Khi bấm khởi động, nguồn 5V cấp cho ESP32 kích hoạt động cơ băng tải, máy nghiền quay, LED lò nhiệt phân và thắp sáng đô thị.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="tab-realmodel" class="tab-content space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl backdrop-blur-sm space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-image"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-teal-400">Trình Xem Mô Hình Thực Tế (Bộ Nhớ Tạm Thời)</h2>
-                            <p class="text-xs text-slate-400">Tải lên ảnh chụp mô hình vật lý của bạn. Ảnh được nạp ngay lập tức từ bộ nhớ tạm thời (FileReader / Base64) để hiển thị mượt mà.</p>
-                        </div>
-                    </div>
-                    <button onclick="loadDefaultModelImage()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition border border-slate-700 flex items-center space-x-2">
-                        <i class="fa-solid fa-rotate-right"></i> <span>Tải ảnh mẫu chuẩn</span>
-                    </button>
-                </div>
-
-                <div id="dropZone" onclick="document.getElementById('imageInput').click()" class="border-2 border-dashed border-emerald-500/50 rounded-2xl p-10 text-center cursor-pointer hover:border-emerald-400 bg-slate-950/60 transition shadow-inner flex flex-col items-center justify-center space-y-3">
-                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                    <div class="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-white">Nhấp chuột vào đây hoặc kéo thả ảnh mô hình vào vùng này</p>
-                        <p class="text-xs text-slate-400 mt-1">Hỗ trợ định dạng JPG, PNG, WEBP (Nạp trực tiếp qua bộ nhớ tạm thời)</p>
-                    </div>
-                </div>
-
-                <div id="imagePreviewContainer" class="hidden relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 p-4 flex flex-col items-center shadow-2xl">
-                    <div class="w-full flex justify-between items-center mb-3 px-2">
-                        <span class="text-xs font-bold text-emerald-400 flex items-center">
-                            <i class="fa-solid fa-check-circle mr-1.5"></i> Đã tải ảnh vào bộ nhớ tạm thời thành công
+            <!-- CỘT 1: Bảng điều khiển & Kết nối ESP32 -->
+            <div class="flex flex-col space-y-5">
+                <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
+                        <h2 class="font-bold text-base flex items-center text-emerald-400">
+                            <i class="fa-solid fa-sliders mr-2"></i> Bảng Điều Khiển
+                        </h2>
+                        <span id="statusBadge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                            Đang dừng (OFF)
                         </span>
-                        <button onclick="clearStoredImage()" class="bg-rose-600 hover:bg-rose-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-trash"></i> <span>Xóa ảnh</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-300">Nhiệt độ lò (Reactor Temp):</span>
+                                <span id="tempVal" class="font-bold text-emerald-400">650 °C</span>
+                            </div>
+                            <input type="range" id="tempRange" min="300" max="900" value="650" class="w-full accent-emerald-500 bg-slate-800 rounded-lg h-2 cursor-pointer">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-300">Tốc độ rác & Động cơ (Speed):</span>
+                                <span id="speedVal" class="font-bold text-emerald-400">50 kg/h</span>
+                            </div>
+                            <input type="range" id="speedRange" min="10" max="100" value="50" class="w-full accent-emerald-500 bg-slate-800 rounded-lg h-2 cursor-pointer">
+                        </div>
+
+                        <button id="toggleBtn" onclick="toggleSystem()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-power-off text-lg"></i>
+                            <span id="btnText">KHỞI ĐỘNG HỆ THỐNG (START)</span>
                         </button>
                     </div>
-                    <div class="w-full overflow-x-auto flex justify-center bg-slate-900/50 rounded-xl p-2 border border-slate-800/80">
-                        <img id="persistedImage" class="max-h-[650px] w-auto object-contain rounded-lg shadow-lg" alt="Mô hình thực tế">
+                </div>
+
+                <!-- ESP32 Hardware Connection Panel -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                        <h2 class="font-bold text-sm flex items-center text-sky-400">
+                            <i class="fa-solid fa-microchip mr-2"></i> Kết Nối Phần Cứng ESP32
+                        </h2>
+                        <span id="espStatus" class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400">Chưa kết nối</span>
+                    </div>
+                    <div class="space-y-3 text-xs">
+                        <button onclick="connectESP32Serial()" class="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl transition flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-solid fa-usb"></i>
+                            <span>Kết nối USB WebSerial</span>
+                        </button>
+                        <div class="flex space-x-2">
+                            <input type="text" id="espIpInput" placeholder="Nhập IP ESP32 (VD: 192.168.1.50)" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200">
+                            <button onclick="connectESP32WiFi()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-lg transition">Gửi Wi-Fi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Metric Cards -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+                        <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div id="resPower" class="text-xl font-black text-white">0.0 kW</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Công suất phát điện</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center">
+                        <div class="text-emerald-400 text-base mb-1"><i class="fa-solid fa-seedling"></i></div>
+                        <div id="resBiochar" class="text-xl font-black text-white">0.0 kg/h</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Than sinh học</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT 2: Mô phỏng đồ họa quy trình (Canvas) -->
+            <div class="flex flex-col bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                        <h2 class="font-bold text-base flex items-center text-emerald-400">
+                            <i class="fa-solid fa-gear fa-spin mr-2"></i> Mô Phỏng Băng Tải & Cơ Khí
+                        </h2>
+                        <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-lg">Click trạm xem chi tiết</span>
+                    </div>
+                    
+                    <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-inner">
+                        <canvas id="simCanvas" class="w-full h-full cursor-pointer"></canvas>
+                    </div>
+                </div>
+
+                <div class="mt-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-center space-x-2">
+                    <i class="fa-solid fa-circle-info text-emerald-400 text-base"></i>
+                    <p><strong>Hoạt động:</strong> Động cơ băng tải và trục máy nghiền quay đồng bộ đưa rác vào lò nhiệt phân.</p>
+                </div>
+            </div>
+
+            <!-- CỘT 3: Sơ đồ mạch điện động -->
+            <div class="flex flex-col bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                        <h2 class="font-bold text-base flex items-center text-emerald-400">
+                            <i class="fa-solid fa-microchip mr-2"></i> Sơ Đồ Mạch Điện Phần Cứng
+                        </h2>
+                        <span id="circuitStatus" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400">
+                            Mạch ngắt (Open)
+                        </span>
+                    </div>
+
+                    <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-inner flex items-center justify-center p-2">
+                        <svg id="circuitSvg" viewBox="0 0 450 340" class="w-full h-full">
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="450" height="340" fill="url(#grid)" />
+
+                            <path id="wire1" d="M 70 170 L 130 170" fill="none" stroke="#64748b" stroke-width="3" />
+                            <path id="wire2" d="M 160 170 L 220 170" fill="none" stroke="#64748b" stroke-width="3" />
+                            <path id="wire3" d="M 260 140 L 360 90" fill="none" stroke="#64748b" stroke-width="3" />
+                            <path id="wire4" d="M 240 140 L 240 70" fill="none" stroke="#64748b" stroke-width="3" />
+                            <path id="wire5" d="M 260 200 L 360 250" fill="none" stroke="#64748b" stroke-width="3" />
+                            <path id="wire6" d="M 360 120 C 360 200, 240 300, 140 230" fill="none" stroke="#64748b" stroke-width="3" />
+
+                            <g transform="translate(45, 145)">
+                                <rect width="30" height="50" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                                <text x="15" y="30" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">5V</text>
+                                <text x="15" y="-5" fill="#94a3b8" font-size="9" text-anchor="middle">Nguồn</text>
+                            </g>
+
+                            <g transform="translate(130, 155)">
+                                <rect width="30" height="30" rx="4" fill="#0f172a" stroke="#fbbf24" stroke-width="2"/>
+                                <circle cx="15" cy="15" r="8" fill="#fbbf24" id="btnIndicator"/>
+                                <text x="15" y="45" fill="#94a3b8" font-size="9" text-anchor="middle">Nút nguồn</text>
+                            </g>
+
+                            <g transform="translate(220, 130)">
+                                <rect width="40" height="80" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+                                <text x="20" y="35" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">MCU</text>
+                                <text x="20" y="50" fill="#10b981" font-size="9" text-anchor="middle">ESP32</text>
+                                <text x="20" y="-8" fill="#94a3b8" font-size="9" text-anchor="middle">Vi điều khiển</text>
+                            </g>
+
+                            <g transform="translate(340, 70)">
+                                <circle cx="20" cy="20" r="18" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+                                <text x="20" y="24" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">M</text>
+                                <text x="20" y="48" fill="#94a3b8" font-size="9" text-anchor="middle">Động cơ</text>
+                            </g>
+
+                            <g transform="translate(225, 30)">
+                                <circle cx="15" cy="15" r="15" fill="#0f172a" stroke="#f97316" stroke-width="2"/>
+                                <text x="15" y="19" fill="#f97316" font-size="11" text-anchor="middle">🔥</text>
+                                <text x="15" y="42" fill="#94a3b8" font-size="9" text-anchor="middle">LED Lò</text>
+                            </g>
+
+                            <g transform="translate(340, 230)">
+                                <circle cx="20" cy="20" r="18" fill="#0f172a" stroke="#eab308" stroke-width="2"/>
+                                <text x="20" y="24" fill="#eab308" font-size="11" text-anchor="middle">💡</text>
+                                <text x="20" y="48" fill="#94a3b8" font-size="9" text-anchor="middle">LED Đô thị</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mt-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start space-x-2">
+                    <i class="fa-solid fa-bolt text-amber-400 text-base mt-0.5"></i>
+                    <div>
+                        <strong class="text-amber-300">Dòng điện mạch:</strong>
+                        <p class="mt-0.5 text-slate-400">ESP32 điều khiển động cơ băng tải, máy nghiền và LED thắp sáng đô thị.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="tab-guide" class="tab-content space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl backdrop-blur-sm space-y-6">
-                <div class="flex items-center space-x-4 border-b border-slate-800 pb-4">
-                    <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl font-bold">
+        <!-- TAB 3: MÔ HÌNH THỰC TẾ (TẢI ẢNH BỘ NHỚ TẠM) -->
+        <section id="tab-diorama2d" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl text-center space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3 flex-wrap gap-2">
+                    <h3 class="font-bold text-base text-emerald-400 flex items-center">
+                        <i class="fa-solid fa-image mr-2"></i> Mô hình thực tế (Lưu bộ nhớ tạm thời)
+                    </h3>
+                    <label class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl cursor-pointer text-xs transition shadow flex items-center space-x-2">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Chọn ảnh mô hình từ máy tính</span>
+                        <input type="file" id="imageUploader" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                    </label>
+                </div>
+                
+                <div class="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-black min-h-[400px] flex items-center justify-center">
+                    <img id="modelImagePreview" src="" alt="Chưa có ảnh mô hình" class="w-full h-auto object-contain mx-auto hidden">
+                    <div id="imagePlaceholder" class="text-slate-500 flex flex-col items-center p-8">
+                        <i class="fa-solid fa-cloud-arrow-up text-5xl mb-3 text-emerald-500/50"></i>
+                        <p class="text-sm">Chưa có ảnh mô hình nào được tải lên.</p>
+                        <p class="text-xs text-slate-400 mt-1">Bấm nút "Chọn ảnh mô hình từ máy tính" ở góc trên để hiển thị.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: HƯỚNG DẪN & BẢN VẼ 3D -->
+        <section id="tab-guide" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center space-x-3 mb-4 border-b border-slate-800 pb-3">
+                    <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-2xl">
                         <i class="fa-solid fa-book-bookmark"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-sky-400">Hướng dẫn sử dụng & Bản vẽ kỹ thuật 3D</h2>
-                        <p class="text-xs text-slate-400">Thông số thiết kế không gian 3D chi tiết và tài liệu vận hành mô hình thực tế / mô phỏng ảo</p>
+                        <h2 class="text-xl font-bold text-emerald-400">Hướng dẫn sử dụng & Thông số 3D ESP32</h2>
+                        <p class="text-xs text-slate-400">Tài liệu vận hành phần cứng ESP32 và phần mềm mô phỏng ảo</p>
                     </div>
                 </div>
 
                 <div class="space-y-6">
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                        <h3 class="text-sm font-bold text-emerald-400 flex items-center border-b border-slate-800 pb-2">
-                            <i class="fa-solid fa-ruler-combined mr-2"></i> I. Bản vẽ thiết kế không gian 3D & Thông số kỹ thuật mô hình thực tế
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300 leading-relaxed">
-                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
-                                <strong class="text-emerald-400 block text-sm">1. Kích thước tổng thể đế mô hình (Base Platform):</strong>
-                                <p>Chiều dài: <strong class="text-white">80 cm</strong> x Chiều rộng: <strong class="text-white">50 cm</strong> x Chiều cao nền: <strong class="text-white">10 cm</strong> (làm bằng bìa carton cứng nhiều lớp lót thảm cỏ nhân tạo).</p>
-                            </div>
-                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
-                                <strong class="text-emerald-400 block text-sm">2. Phân khu 1 - Trạm đầu vào & Băng tải (Góc trái):</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li><strong>Thùng rác (Waste Input):</strong> Hộp vuông 10 x 10 x 12 cm phân loại nhựa và chất thải hữu cơ.</li>
-                                    <li><strong>Băng tải (Conveyor Belt):</strong> Máng nghiêng góc 30 độ, dài 22 cm, rộng 6 cm tích hợp động cơ giảm tốc mini.</li>
-                                </ul>
-                            </div>
-                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
-                                <strong class="text-emerald-400 block text-sm">3. Phân khu 2 - Cụm cơ khí & Lò nhiệt phân (Trung tâm):</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li><strong>Máy nghiền (Shredder):</strong> Hộp màu vàng 12 x 10 x 10 cm mô phỏng trục cắt dao quay ngược chiều.</li>
-                                    <li><strong>Lò nhiệt phân (Pyrolysis Reactor):</strong> Trụ tròn đường kính 10 cm, cao 22 cm, khoét kính mica lót LED cam/đỏ.</li>
-                                    <li><strong>Khay sản phẩm phụ:</strong> 3 ngăn trong suốt chứa Than sinh học (Biochar), Nhiên liệu lỏng (Liquid Fuel) và Khí đốt (Gas).</li>
-                                </ul>
-                            </div>
-                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
-                                <strong class="text-emerald-400 block text-sm">4. Phân khu 3 - Trạm lọc khí & Phát điện (Góc phải):</strong>
-                                <ul class="list-disc pl-4 space-y-1">
-                                    <li><strong>Bình lọc khí (Gas Filter):</strong> Trụ nhựa trong xanh dương cao 18 cm, chứa vật liệu lọc giả lập.</li>
-                                    <li><strong>Máy phát điện (Generator):</strong> Hộp điều khiển tích hợp tuabin và mạch điện.</li>
-                                    <li><strong>Khu đô thị (Electricity Output):</strong> Mô hình nhà ở thu nhỏ kết hợp LED phát sáng tượng trưng năng lượng xanh.</li>
-                                </ul>
-                            </div>
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                        <div class="flex items-center space-x-2 text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>I. Kết nối phần cứng ESP32 & Sơ đồ chân (Pinout)</span>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                            <h3 class="text-sm font-bold text-teal-400 flex items-center border-b border-slate-800 pb-2">
-                                <i class="fa-solid fa-toolbox mr-2"></i> II. Hướng dẫn vận hành Mô hình thực tế (Phần cứng)
-                            </h3>
-                            <ul class="space-y-3 text-xs text-slate-300 leading-relaxed">
-                                <li><strong class="text-white">Chuẩn bị vật liệu:</strong> Bìa carton cứng, chai nhựa, ống hút, motor giảm tốc mini, đèn LED màu vàng/cam, mạch ESP32/Arduino và nguồn pin 5V.</li>
-                                <li><strong class="text-white">Lắp ráp cơ khí:</strong> Cố định các phân khu trên tấm đế chính theo đúng thông số bản vẽ 3D ở trên.</li>
-                                <li><strong class="text-white">Đấu nối điện:</strong> Kết nối nút nhấn nguồn vào chân số, motor băng tải, máy nghiền và các đèn LED vào chân PWM/Digital của vi điều khiển.</li>
-                                <li><strong class="text-white">Vận hành trưng bày:</strong> Bật công tắc tổng để kích hoạt động cơ quay băng tải, máy nghiền và hệ thống đèn LED bập bùng mô phỏng lò nhiệt phân trước ban giám khảo.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                            <h3 class="text-sm font-bold text-sky-400 flex items-center border-b border-slate-800 pb-2">
-                                <i class="fa-solid fa-laptop-code mr-2"></i> III. Hướng dẫn sử dụng Mô phỏng ảo trên máy tính
-                            </h3>
-                            <ul class="space-y-3 text-xs text-slate-300 leading-relaxed">
-                                <li><strong class="text-white">Bước 1:</strong> Truy cập tệp HTML và chuyển sang tab <span class="text-emerald-400 font-semibold">"2. Mô phỏng ảo & Cơ khí quay"</span>.</li>
-                                <li><strong class="text-white">Bước 2:</strong> Sử dụng thanh trượt thiết lập thông số vận hành (Nhiệt độ lò, Tốc độ cơ khí).</li>
-                                <li><strong class="text-white">Bước 3:</strong> Nhấn nút <strong class="text-emerald-400">KHỞI ĐỘNG HỆ THỐNG (START)</strong> để kích hoạt động cơ băng tải quay, trục máy nghiền cắt rác, lò nhiệt phân bập bùng và tuabin phát điện.</li>
-                                <li><strong class="text-white">Bước 4:</strong> Click chuột trực tiếp vào bất kỳ trạm nào trên màn hình Canvas để mở cửa sổ kiến thức STEM chuyên sâu phục vụ thuyết trình.</li>
-                            </ul>
-                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Mạch ESP32 trên đế mở rộng kết nối trực tiếp với động cơ băng tải (PWM Pin 25), máy nghiền (Pin 26), LED lò nhiệt phân (Pin 14) và LED khu đô thị (Pin 27). Bạn có thể kết nối cáp USB Type-C trực tiếp vào máy tính và bấm <strong>"Kết nối USB WebSerial"</strong> ở Tab 2 để điều khiển phần cứng thực tế qua giao diện web!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -480,134 +345,165 @@
 
     <!-- STEM Knowledge Modal -->
     <div id="stemModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-xl">
-                        <i class="fa-solid fa-flask"></i>
-                    </div>
-                    <div>
-                        <h3 id="modalTitle" class="text-base font-bold text-white">Tên trạm</h3>
-                        <p class="text-xs text-emerald-400">Kiến thức Chuyên đề STEM & Công nghệ</p>
-                    </div>
-                </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <p id="modalDesc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">...</p>
-            <div class="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 text-xs text-slate-400">
-                <strong>Ý nghĩa giáo dục:</strong> Giúp học sinh nắm bắt quy trình công nghệ xanh và phát triển tư duy sáng tạo trong môn Hoạt động trải nghiệm, hướng nghiệp.
-            </div>
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent"></div>
         </div>
     </div>
 
-    <footer class="bg-slate-900 border-t border-slate-800 py-5 mt-10 text-center text-xs text-slate-400">
-        <p>© 2026 <strong>Smart Waste to Energy System</strong> - Hệ Thống Xử Lý Rác Thải Thông Minh</p>
-        <p class="mt-1 text-emerald-400/80">Trung tâm GDNN-GDTX Gio Linh | Giáo viên hướng dẫn: <strong>Nguyễn Giang Nam</strong></p>
-    </footer>
-
+    <!-- JavaScript Logic -->
     <script>
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
-                el.className = "px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap";
+        function switchTab(tabName) {
+            const tabs = ['intro', 'simulation', 'diorama2d', 'guide'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`btn-${t}`);
+                if (t === tabName) {
+                    section.classList.remove('hidden');
+                    if(t === 'simulation') {
+                        section.classList.add('grid');
+                        resizeCanvas();
+                    }
+                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-slate-950 shadow-lg flex items-center space-x-2 whitespace-nowrap";
+                } else {
+                    section.classList.add('hidden');
+                    section.classList.remove('grid');
+                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 flex items-center space-x-2 whitespace-nowrap";
+                }
             });
-
-            document.getElementById(tabId).classList.add('active');
-            const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.className = "px-4 py-2 rounded-xl text-sm font-semibold transition bg-emerald-600 text-slate-950 shadow-lg flex items-center space-x-2 whitespace-nowrap";
-
-            if(tabId === 'tab-simulation') {
-                resizeCanvas();
-            }
         }
 
-        // Robust Temporary Memory Image Upload Logic (FileReader / Base64)
-        const dropZone = document.getElementById('dropZone');
-        const imageInput = document.getElementById('imageInput');
-        const persistedImage = document.getElementById('persistedImage');
-        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-
-        function loadDefaultModelImage() {
-            const defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='600' viewBox='0 0 1000 600'><rect width='1000' height='600' fill='%230f172a'/><rect x='60' y='60' width='880' height='480' rx='24' fill='%231e293b' stroke='%2310b981' stroke-width='4'/><text x='500' y='180' fill='%2310b981' font-size='32' font-weight='bold' text-anchor='middle'>Smart Waste to Energy System</text><text x='500' y='240' fill='%2338bdf8' font-size='20' font-weight='600' text-anchor='middle'>Trung tâm GDNN-GDTX Gio Linh - GVHD: Nguyễn Giang Nam</text><text x='500' y='320' fill='%2394a3b8' font-size='18' text-anchor='middle'>Nhấp chuột vào đây để chọn ảnh chụp mô hình thực tế</text><text x='500' y='360' fill='%23f59e0b' font-size='16' text-anchor='middle'>Ảnh sẽ được nạp ngay lập tức vào bộ nhớ tạm thời</text></svg>";
-            persistedImage.src = defaultSvg;
-            imagePreviewContainer.classList.remove('hidden');
-        }
-
+        // Image Uploader & Persistence (Session / Temporary Memory)
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    persistedImage.src = e.target.result;
-                    imagePreviewContainer.classList.remove('hidden');
+                    const imgData = e.target.result;
+                    displayUploadedImage(imgData);
+                    try {
+                        sessionStorage.setItem('modelImageTemp', imgData);
+                    } catch(err) {
+                        console.log("Storage limit reached");
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-emerald-400', 'bg-slate-900'); });
-        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-emerald-400', 'bg-slate-900'); });
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-emerald-400', 'bg-slate-900');
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                const file = e.dataTransfer.files[0];
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    persistedImage.src = event.target.result;
-                    imagePreviewContainer.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
+        function displayUploadedImage(src) {
+            const img = document.getElementById('modelImagePreview');
+            const placeholder = document.getElementById('imagePlaceholder');
+            img.src = src;
+            img.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedImg = sessionStorage.getItem('modelImageTemp');
+            if (savedImg) {
+                displayUploadedImage(savedImg);
             }
         });
 
-        function clearStoredImage() {
-            loadDefaultModelImage();
-            imageInput.value = '';
+        // ESP32 WebSerial & Wi-Fi Integration
+        let serialPort = null;
+        let serialWriter = null;
+
+        async function connectESP32Serial() {
+            if (!('serial' in navigator)) {
+                alert('Trình duyệt của bạn không hỗ trợ WebSerial. Hãy sử dụng Chrome hoặc Edge.');
+                return;
+            }
+            try {
+                serialPort = await navigator.serial.requestPort();
+                await serialPort.open({ baudRate: 115200 });
+                const textEncoder = new TextEncoderStream();
+                const writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
+                serialWriter = textEncoder.writable.getWriter();
+                document.getElementById('espStatus').innerText = "Đã kết nối USB";
+                document.getElementById('espStatus').className = "text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                alert("Kết nối thành công với ESP32 qua USB!");
+            } catch (err) {
+                console.error(err);
+                alert('Không thể kết nối cổng Serial.');
+            }
         }
 
-        loadDefaultModelImage();
+        async function sendDataToESP32(dataObj) {
+            const jsonStr = JSON.stringify(dataObj) + "\n";
+            if (serialWriter) {
+                try {
+                    await serialWriter.write(jsonStr);
+                } catch(e) { console.error(e); }
+            }
+        }
 
-        // Canvas Simulation Logic with Fixed Proportions & Clean Rendering
-        const plantCanvas = document.getElementById('plantCanvas');
-        const plantCtx = plantCanvas.getContext('2d');
+        async function connectESP32WiFi() {
+            const ip = document.getElementById('espIpInput').value.trim();
+            if(!ip) {
+                alert('Vui lòng nhập địa chỉ IP của ESP32!');
+                return;
+            }
+            try {
+                let response = await fetch(`http://${ip}/status`, { method: 'GET', mode: 'cors' });
+                if(response.ok) {
+                    document.getElementById('espStatus').innerText = "Đã kết nối Wi-Fi";
+                    document.getElementById('espStatus').className = "text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                    alert("Kết nối Wi-Fi thành công với ESP32 tại " + ip);
+                } else {
+                    alert("Không phản hồi từ thiết bị ESP32.");
+                }
+            } catch(e) {
+                alert("Lỗi kết nối mạng tới ESP32. Hãy kiểm tra lại IP hoặc CORS.");
+            }
+        }
 
-        let isRunning = false;
+        // Canvas Simulation Logic
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            if(!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        let systemActive = false;
         let temp = 650;
-        let feedSpeed = 50;
-        let turbineAngle = 0;
-        let wasteParticles = [];
+        let speed = 50;
 
+        let wasteParticles = [];
         class WasteParticle {
             constructor() {
                 this.reset();
             }
             reset() {
-                this.x = 75;
-                this.y = 195;
+                this.x = 40;
+                this.y = 175;
                 this.progress = 0;
                 this.type = Math.random() > 0.5 ? 'plastic' : 'organic';
             }
             update(speedVal) {
-                if (!isRunning) return;
-                this.progress += (speedVal / 1400);
+                if (!systemActive) return;
+                this.progress += (speedVal / 1200);
                 if (this.progress >= 1) {
                     this.reset();
                 }
-                this.x = 75 + this.progress * 115;
-                this.y = 195 - this.progress * 35;
+                this.x = 45 + this.progress * 115;
+                this.y = 195 - this.progress * 30;
             }
             draw() {
-                plantCtx.fillStyle = this.type === 'plastic' ? '#38bdf8' : '#4ade80';
-                plantCtx.beginPath();
-                plantCtx.roundRect(this.x - 5, this.y - 5, 10, 10, 3);
-                plantCtx.fill();
-                plantCtx.strokeStyle = '#0f172a';
-                plantCtx.lineWidth = 1;
-                plantCtx.stroke();
+                ctx.fillStyle = this.type === 'plastic' ? '#38bdf8' : '#4ade80';
+                ctx.beginPath();
+                ctx.roundRect(this.x - 6, this.y - 6, 12, 12, 3);
+                ctx.fill();
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
             }
         }
 
@@ -617,252 +513,237 @@
             wasteParticles.push(p);
         }
 
-        const stationsMap = {
-            bin: { title: "Waste Input (Đầu vào rác)", desc: "Thu gom rác thải sinh hoạt (nhựa và chất thải hữu cơ) trước khi đưa vào hệ thống xử lý." },
-            conveyor: { title: "Conveyor Belt (Băng tải & Động cơ)", desc: "Sử dụng động cơ giảm tốc mini vận chuyển liên tục rác từ thùng chứa vào khoang nghiền." },
-            shredder: { title: "Shredder (Máy nghiền rác - Trục quay)", desc: "Cắt nhỏ rác thải bằng các trục dao quay ngược chiều với tốc độ cao để tối ưu hóa quá trình nhiệt phân." },
-            reactor: { title: "Pyrolysis Reactor (Lò nhiệt phân)", desc: "Buồng gia nhiệt ở nhiệt độ cao (300°C - 900°C) trong môi trường không có oxy để phân hủy rác thành khí và than sinh học." },
-            filter: { title: "Gas Filter (Hệ thống lọc khí)", desc: "Lọc sạch các tạp chất, hơi ẩm và khí độc hại sinh ra từ quá trình nhiệt phân." },
-            generator: { title: "Generator (Máy phát điện)", desc: "Đốt khí sạch để vận hành tuabin máy phát điện tạo ra dòng điện năng." },
-            output: { title: "Electricity Output (Đầu ra điện)", desc: "Cung cấp điện năng thắp sáng các hộ gia đình trong khu đô thị và giảm thiểu rác thải chôn lấp." }
-        };
+        const stations = [
+            { id: 'bin', name: 'Waste Input (Đầu vào rác)', x: 40, y: 190, w: 45, h: 50, info: 'Thu gom rác thải sinh hoạt (nhựa và chất thải hữu cơ) trước khi đưa vào hệ thống xử lý.' },
+            { id: 'conveyor', name: 'Conveyor Belt (Băng tải & Động cơ)', x: 100, y: 165, w: 70, h: 40, info: 'Sử dụng động cơ giảm tốc mini vận chuyển liên tục rác từ thùng chứa vào khoang nghiền.' },
+            { id: 'shredder', name: 'Shredder (Máy nghiền rác - Trục quay)', x: 185, y: 145, w: 55, h: 65, info: 'Cắt nhỏ rác thải bằng các trục dao quay ngược chiều với tốc độ cao để tối ưu hóa quá trình nhiệt phân.' },
+            { id: 'reactor', name: 'Pyrolysis Reactor (Lò nhiệt phân)', x: 260, y: 110, w: 60, h: 105, info: 'Buồng gia nhiệt ở nhiệt độ cao (300°C - 900°C) trong môi trường không có oxy để phân hủy rác thành khí và than sinh học.' },
+            { id: 'filter', name: 'Gas Filter (Hệ thống lọc khí)', x: 345, y: 120, w: 45, h: 90, info: 'Lọc sạch các tạp chất, hơi ẩm và khí độc hại sinh ra từ quá trình nhiệt phân.' },
+            { id: 'generator', name: 'Generator (Máy phát điện)', x: 420, y: 145, w: 55, h: 70, info: 'Đốt khí sạch để vận hành tuabin máy phát điện tạo ra dòng điện năng.' },
+            { id: 'output', name: 'Electricity Output (Đầu ra điện)', x: 490, y: 155, w: 45, h: 65, info: 'Cung cấp điện năng thắp sáng các hộ gia đình trong khu đô thị và giảm thiểu rác thải chôn lấp.' }
+        ];
 
-        function resizeCanvas() {
-            if (!plantCanvas) return;
-            const rect = plantCanvas.parentElement.getBoundingClientRect();
-            plantCanvas.width = rect.width * window.devicePixelRatio;
-            plantCanvas.height = rect.height * window.devicePixelRatio;
-            plantCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        }
-        window.addEventListener('resize', resizeCanvas);
+        const tempRange = document.getElementById('tempRange');
+        const tempVal = document.getElementById('tempVal');
+        const speedRange = document.getElementById('speedRange');
+        const speedVal = document.getElementById('speedVal');
+        const statusBadge = document.getElementById('statusBadge');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const btnText = document.getElementById('btnText');
+        const circuitStatus = document.getElementById('circuitStatus');
+        const btnIndicator = document.getElementById('btnIndicator');
 
-        function toggleSimulation() {
-            isRunning = !isRunning;
-            const badge = document.getElementById('status-badge');
-            const toggleBtn = document.getElementById('toggle-btn');
-            const toggleIcon = document.getElementById('toggle-icon');
-            const toggleText = document.getElementById('toggle-text');
-            const circuitStatus = document.getElementById('circuitStatus');
-            const btnIndicator = document.getElementById('btnIndicator');
+        tempRange.addEventListener('input', (e) => {
+            temp = parseInt(e.target.value);
+            tempVal.innerText = temp + ' °C';
+            updateMetrics();
+            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive });
+        });
 
-            if (isRunning) {
-                badge.className = "px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse";
-                badge.innerText = "ON (Đang chạy)";
-                toggleBtn.className = "w-full py-3.5 px-4 rounded-2xl font-bold text-xs tracking-wide shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white shadow-rose-900/50";
-                toggleIcon.className = "fa-solid fa-power-off text-sm text-white";
-                toggleText.innerText = "DỪNG HỆ THỐNG (STOP)";
+        speedRange.addEventListener('input', (e) => {
+            speed = parseInt(e.target.value);
+            speedVal.innerText = speed + ' kg/h';
+            updateMetrics();
+            sendDataToESP32({ cmd: "update", temp: temp, speed: speed, state: systemActive });
+        });
 
-                circuitStatus.className = "px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+        function toggleSystem() {
+            systemActive = !systemActive;
+            if (systemActive) {
+                statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                statusBadge.innerText = "Đang chạy (RUNNING)";
+                toggleBtn.className = "w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2";
+                btnText.innerText = "DỪNG HỆ THỐNG (STOP)";
+                
+                circuitStatus.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
                 circuitStatus.innerText = "Mạch đóng (Active)";
                 btnIndicator.setAttribute("fill", "#10b981");
 
                 ['wire1', 'wire2', 'wire3', 'wire4', 'wire5', 'wire6'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) {
-                        el.setAttribute("stroke", "#10b981");
-                        el.classList.add("circuit-line");
-                    }
+                    document.getElementById(id).setAttribute("stroke", "#10b981");
+                    document.getElementById(id).classList.add("circuit-line");
                 });
             } else {
-                badge.className = "px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30";
-                badge.innerText = "OFF (Đang dừng)";
-                toggleBtn.className = "w-full py-3.5 px-4 rounded-2xl font-bold text-xs tracking-wide shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 shadow-emerald-900/50";
-                toggleIcon.className = "fa-solid fa-power-off text-sm text-slate-950";
-                toggleText.innerText = "KHỞI ĐỘNG HỆ THỐNG (START)";
-
-                circuitStatus.className = "px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/30";
+                statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+                statusBadge.innerText = "Đang dừng (OFF)";
+                toggleBtn.className = "w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2";
+                btnText.innerText = "KHỞI ĐỘNG HỆ THỐNG (START)";
+                
+                circuitStatus.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400";
                 circuitStatus.innerText = "Mạch ngắt (Open)";
                 btnIndicator.setAttribute("fill", "#fbbf24");
 
                 ['wire1', 'wire2', 'wire3', 'wire4', 'wire5', 'wire6'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) {
-                        el.setAttribute("stroke", "#64748b");
-                        el.classList.remove("circuit-line");
-                    }
+                    document.getElementById(id).setAttribute("stroke", "#64748b");
+                    document.getElementById(id).classList.remove("circuit-line");
                 });
             }
-        }
-
-        function updateParameters() {
-            temp = parseInt(document.getElementById('temp-slider').value);
-            feedSpeed = parseInt(document.getElementById('speed-slider').value);
-            document.getElementById('temp-display').innerText = temp + " °C";
-            document.getElementById('speed-display').innerText = feedSpeed + " kg/h";
+            updateMetrics();
+            sendDataToESP32({ cmd: "state", state: systemActive, temp: temp, speed: speed });
         }
 
         function updateMetrics() {
-            if (isRunning) {
-                const power = (feedSpeed * 0.85 * (temp / 600)).toFixed(1);
-                const biochar = (feedSpeed * 0.25).toFixed(1);
-                const fuel = (feedSpeed * 0.35).toFixed(1);
-                const co2 = (feedSpeed * 1.8).toFixed(1);
-
-                document.getElementById('metric-power').innerHTML = `${power} <span class="text-[11px] font-normal text-slate-400">kW</span>`;
-                document.getElementById('metric-biochar').innerHTML = `${biochar} <span class="text-[11px] font-normal text-slate-400">kg/h</span>`;
-                document.getElementById('metric-fuel').innerHTML = `${fuel} <span class="text-[11px] font-normal text-slate-400">L/h</span>`;
-                document.getElementById('metric-co2').innerHTML = `${co2} <span class="text-[11px] font-normal text-slate-400">kg/h</span>`;
-            } else {
-                document.getElementById('metric-power').innerHTML = `0.0 <span class="text-[11px] font-normal text-slate-400">kW</span>`;
-                document.getElementById('metric-biochar').innerHTML = `0.0 <span class="text-[11px] font-normal text-slate-400">kg/h</span>`;
-                document.getElementById('metric-fuel').innerHTML = `0.0 <span class="text-[11px] font-normal text-slate-400">L/h</span>`;
-                document.getElementById('metric-co2').innerHTML = `0.0 <span class="text-[11px] font-normal text-slate-400">kg/h</span>`;
+            if (!systemActive) {
+                document.getElementById('resPower').innerText = "0.0 kW";
+                document.getElementById('resBiochar').innerText = "0.0 kg/h";
+                return;
             }
-        }
-
-        plantCanvas.addEventListener('click', (e) => {
-            const rect = plantCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const w = plantCanvas.width / window.devicePixelRatio;
-
-            let stationKey = null;
-            if (x < w * 0.14) stationKey = 'bin';
-            else if (x < w * 0.28) stationKey = 'conveyor';
-            else if (x < w * 0.40) stationKey = 'shredder';
-            else if (x < w * 0.55) stationKey = 'reactor';
-            else if (x < w * 0.68) stationKey = 'filter';
-            else if (x < w * 0.85) stationKey = 'generator';
-            else stationKey = 'output';
-
-            if (stationsMap[stationKey]) showModal(stationsMap[stationKey]);
-        });
-
-        function showModal(data) {
-            document.getElementById('modalTitle').innerText = data.title;
-            document.getElementById('modalDesc').innerText = data.desc;
-            document.getElementById('stemModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('stemModal').classList.add('hidden');
+            let power = (speed * (temp / 650) * 0.35).toFixed(1);
+            let biochar = (speed * 0.25).toFixed(1);
+            document.getElementById('resPower').innerText = power + " kW";
+            document.getElementById('resBiochar').innerText = biochar + " kg/h";
         }
 
         let frameCount = 0;
-        function drawPlant() {
-            if (document.getElementById('tab-simulation').classList.contains('active')) {
-                const w = 600;
-                const h = 350;
-                plantCtx.clearRect(0, 0, plantCanvas.width, plantCanvas.height);
-                
-                plantCtx.save();
-                plantCtx.scale((plantCanvas.width / window.devicePixelRatio) / w, (plantCanvas.height / window.devicePixelRatio) / h);
+        function drawSimulation() {
+            if(!document.getElementById('tab-simulation').classList.contains('hidden')) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let w = canvas.width;
+                let h = canvas.height;
+                let scaleX = w / 560;
+                let scaleY = h / 300;
 
-                // Ground line
-                plantCtx.fillStyle = '#022c22';
-                plantCtx.fillRect(0, 260, w, 90);
-                plantCtx.strokeStyle = '#059669'; plantCtx.lineWidth = 2;
-                plantCtx.beginPath(); plantCtx.moveTo(0, 260); plantCtx.lineTo(w, 260); plantCtx.stroke();
+                ctx.save();
+                ctx.scale(scaleX, scaleY);
 
-                // 1. Waste Bin
-                plantCtx.fillStyle = '#065f46'; plantCtx.fillRect(40, 200, 35, 55);
-                plantCtx.strokeStyle = '#10b981'; plantCtx.strokeRect(40, 200, 35, 55);
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.font = '10px Inter'; plantCtx.textAlign = 'center';
-                plantCtx.fillText('Waste Input', 57, 275);
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(20, 240);
+                ctx.lineTo(540, 240);
+                ctx.stroke();
 
-                // 2. Conveyor Belt (Clean sloped belt + moving waste particles)
-                plantCtx.strokeStyle = '#475569'; plantCtx.lineWidth = 8;
-                plantCtx.beginPath(); plantCtx.moveTo(75, 220); plantCtx.lineTo(190, 185); plantCtx.stroke();
+                stations.forEach(s => {
+                    ctx.fillStyle = '#0f172a';
+                    ctx.strokeStyle = systemActive ? '#10b981' : '#334155';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.roundRect(s.x, s.y, s.w, s.h, 6);
+                    ctx.fill();
+                    ctx.stroke();
+                });
 
-                // Motor spinning above conveyor
-                plantCtx.fillStyle = '#334155'; plantCtx.fillRect(125, 145, 26, 20);
-                plantCtx.strokeStyle = '#38bdf8'; plantCtx.strokeRect(125, 145, 26, 20);
-                plantCtx.fillStyle = '#38bdf8'; plantCtx.font = '8px Inter'; plantCtx.fillText('MOTOR', 138, 141);
-                plantCtx.save();
-                plantCtx.translate(138, 155);
-                if (isRunning) plantCtx.rotate(frameCount * (feedSpeed * 0.05));
-                plantCtx.strokeStyle = '#f43f5e'; plantCtx.lineWidth = 2;
-                plantCtx.beginPath(); plantCtx.moveTo(-7,0); plantCtx.lineTo(7,0); plantCtx.moveTo(0,-7); plantCtx.lineTo(0,7); plantCtx.stroke();
-                plantCtx.restore();
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(45, 200, 35, 35);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '10px Inter';
+                ctx.fillText('RÁC', 52, 222);
 
-                if (isRunning) {
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 6;
+                ctx.beginPath();
+                ctx.moveTo(90, 215);
+                ctx.lineTo(170, 175);
+                ctx.stroke();
+
+                // Motor
+                ctx.fillStyle = '#334155';
+                ctx.fillRect(125, 140, 24, 20);
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(125, 140, 24, 20);
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = '8px Inter';
+                ctx.fillText('MOTOR', 121, 137);
+
+                let motorAngle = systemActive ? frameCount * (speed * 0.05) : 0;
+                ctx.save();
+                ctx.translate(137, 150);
+                ctx.rotate(motorAngle);
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(-8, 0); ctx.lineTo(8, 0);
+                ctx.moveTo(0, -8); ctx.lineTo(0, 8);
+                ctx.stroke();
+                ctx.restore();
+
+                if (systemActive) {
                     wasteParticles.forEach(p => {
-                        p.update(feedSpeed);
+                        p.update(speed);
                         p.draw();
                     });
                 }
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('Conveyor', 132, 275);
 
-                // 3. Shredder
-                plantCtx.fillStyle = '#eab308'; plantCtx.fillRect(205, 160, 45, 55);
-                plantCtx.strokeStyle = '#ca8a04'; plantCtx.strokeRect(205, 160, 45, 55);
-                if (isRunning) {
-                    let sAngle = frameCount * (feedSpeed * 0.08);
-                    plantCtx.save();
-                    plantCtx.translate(220, 187); plantCtx.rotate(sAngle);
-                    plantCtx.strokeStyle = '#0f172a'; plantCtx.lineWidth = 2.5;
-                    plantCtx.beginPath(); plantCtx.moveTo(-6,0); plantCtx.lineTo(6,0); plantCtx.stroke();
-                    plantCtx.restore();
+                // Shredder
+                ctx.fillStyle = '#eab308';
+                ctx.fillRect(195, 160, 35, 35);
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 10px Inter';
+                ctx.fillText('CRUSH', 193, 182);
 
-                    plantCtx.save();
-                    plantCtx.translate(235, 187); plantCtx.rotate(-sAngle);
-                    plantCtx.strokeStyle = '#0f172a'; plantCtx.lineWidth = 2.5;
-                    plantCtx.beginPath(); plantCtx.moveTo(-6,0); plantCtx.lineTo(6,0); plantCtx.stroke();
-                    plantCtx.restore();
-                }
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('Shredder', 227, 275);
+                if (systemActive) {
+                    let shredAngle = frameCount * (speed * 0.08);
+                    ctx.save();
+                    ctx.translate(205, 177);
+                    ctx.rotate(shredAngle);
+                    ctx.strokeStyle = '#0f172a';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(-7, 0); ctx.lineTo(7, 0);
+                    ctx.moveTo(0, -7); ctx.lineTo(0, 7);
+                    ctx.stroke();
+                    ctx.restore();
 
-                // 4. Pyrolysis Reactor
-                plantCtx.fillStyle = '#1e293b'; plantCtx.fillRect(285, 130, 50, 85);
-                plantCtx.strokeStyle = '#059669'; plantCtx.lineWidth = 2; plantCtx.strokeRect(285, 130, 50, 85);
-                plantCtx.fillStyle = '#0f172a'; plantCtx.fillRect(297, 155, 26, 35);
-                if (isRunning) {
-                    plantCtx.fillStyle = temp > 750 ? '#ef4444' : '#f59e0b';
-                    plantCtx.beginPath();
-                    plantCtx.moveTo(310, 190);
-                    plantCtx.lineTo(310 - 8 + Math.sin(frameCount*0.2)*4, 165);
-                    plantCtx.lineTo(310 + 8, 165);
-                    plantCtx.closePath(); plantCtx.fill();
-                }
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('Reactor', 310, 275);
-
-                // 5. Gas Filter
-                plantCtx.fillStyle = '#0284c7'; plantCtx.fillRect(370, 140, 35, 75);
-                plantCtx.strokeStyle = '#38bdf8'; plantCtx.strokeRect(370, 140, 35, 75);
-                if (isRunning) {
-                    plantCtx.fillStyle = '#bae6fd';
-                    let bY = 200 - ((frameCount * 2) % 40);
-                    plantCtx.beginPath(); plantCtx.arc(387, bY, 2.5, 0, Math.PI * 2); plantCtx.fill();
-                }
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('Gas Filter', 387, 275);
-
-                // 6. Generator
-                plantCtx.fillStyle = '#2563eb'; plantCtx.fillRect(440, 160, 45, 55);
-                plantCtx.strokeStyle = '#60a5fa'; plantCtx.strokeRect(440, 160, 45, 55);
-                plantCtx.save(); plantCtx.translate(462, 187);
-                if (isRunning) plantCtx.rotate(turbineAngle);
-                plantCtx.strokeStyle = '#fef08a'; plantCtx.lineWidth = 2.5;
-                plantCtx.beginPath(); plantCtx.moveTo(-8,0); plantCtx.lineTo(8,0); plantCtx.moveTo(0,-8); plantCtx.lineTo(0,8); plantCtx.stroke();
-                plantCtx.restore();
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('Generator', 462, 275);
-
-                // 7. City Output
-                plantCtx.fillStyle = '#ca8a04'; plantCtx.fillRect(520, 175, 40, 40);
-                if (isRunning) {
-                    plantCtx.fillStyle = '#fde047'; plantCtx.shadowColor = '#facc15'; plantCtx.shadowBlur = 15;
-                    plantCtx.fillRect(532, 155, 16, 20);
-                    plantCtx.shadowBlur = 0;
-                }
-                plantCtx.fillStyle = '#a7f3d0'; plantCtx.fillText('City Output', 540, 275);
-
-                if (isRunning) {
-                    turbineAngle += 0.12 * (feedSpeed / 50);
-                    frameCount++;
+                    ctx.save();
+                    ctx.translate(220, 177);
+                    ctx.rotate(-shredAngle);
+                    ctx.strokeStyle = '#0f172a';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(-7, 0); ctx.lineTo(7, 0);
+                    ctx.moveTo(0, -7); ctx.lineTo(0, 7);
+                    ctx.stroke();
+                    ctx.restore();
                 }
 
-                plantCtx.restore();
+                // Reactor
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(270, 130, 40, 70);
+                if (systemActive) {
+                    ctx.fillStyle = Math.random() > 0.5 ? '#f97316' : '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(290, 165, 12 + Math.sin(frameCount*0.2)*3, 0, Math.PI*2);
+                    ctx.fill();
+                }
+
+                // Filter
+                ctx.fillStyle = '#0284c7';
+                ctx.fillRect(355, 135, 25, 65);
+                if (systemActive) {
+                    ctx.fillStyle = '#e0f2fe';
+                    let bubbleY = 190 - ((frameCount * 2) % 50);
+                    ctx.beginPath();
+                    ctx.arc(367, bubbleY, 3, 0, Math.PI*2);
+                    ctx.arc(370, bubbleY + 15, 2, 0, Math.PI*2);
+                    ctx.fill();
+                }
+
+                // Generator
+                ctx.fillStyle = '#2563eb';
+                ctx.fillRect(430, 155, 35, 50);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                let angle = systemActive ? frameCount * 0.15 : 0;
+                ctx.arc(447, 180, 12, angle, angle + Math.PI/2);
+                ctx.stroke();
+
+                // Town Output
+                ctx.fillStyle = '#ca8a04';
+                ctx.fillRect(500, 170, 25, 40);
+                ctx.fillStyle = (systemActive && temp > 400) ? '#fde047' : '#64748b';
+                ctx.beginPath();
+                ctx.arc(512, 160, 10, 0, Math.PI*2);
+                ctx.fill();
+
+                ctx.restore();
+                frameCount++;
             }
-            updateMetrics();
-            requestAnimationFrame(drawPlant);
+            requestAnimationFrame(drawSimulation);
         }
 
-        window.onload = function() {
-            resizeCanvases();
-            drawPlant();
-        };
-
-        function resizeCanvases() {
-            resizeCanvas();
-        }
+        drawSimulation();
     </script>
 </body>
 </html>
